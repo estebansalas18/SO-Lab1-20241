@@ -25,10 +25,8 @@ int same_file(const char *file1, const char *file2)
 }
 
 // Imprimir un array de strings
-void print_array(char **array)
-{
-    while (*array != NULL)
-    {
+void print_array(char **array) {
+    while (*array != NULL) {
         printf("%s", *array);
         array++;
     }
@@ -58,6 +56,37 @@ char **read_file(const char *filename) {
     }
     lines[num_lines] = NULL;
     fclose(file);
+    return lines;
+}
+
+// Leer una cadena de la entrada estándar
+char **read_shell_str() {
+    int num_lines = 0;
+    char **lines = NULL;
+    char buffer[MAX_LINE_LENGTH];
+    lines = (char **)malloc(sizeof(char *));
+    if (lines == NULL) {
+        fprintf(stderr, "malloc failed\n");
+        exit(1);
+    }
+    while (fgets(buffer, MAX_LINE_LENGTH, stdin) != NULL) {
+        if (strcmp(buffer, "\n") == 0) {
+            break;
+        }
+        lines[num_lines] = (char *)malloc(strlen(buffer) + 1);
+        if (lines[num_lines] == NULL) {
+            fprintf(stderr, "malloc failed\n");
+            exit(1);
+        }
+        strcpy(lines[num_lines], buffer);
+        num_lines++;
+        lines = (char **)realloc(lines, (num_lines + 1) * sizeof(char *));
+        if (lines == NULL) {
+            fprintf(stderr, "malloc failed\n");
+            exit(1);
+        }
+    }
+    lines[num_lines] = NULL;
     return lines;
 }
 
