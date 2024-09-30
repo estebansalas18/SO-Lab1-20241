@@ -90,3 +90,21 @@ char **read_shell_str() {
     return lines;
 }
 
+// Escribir un array de strings en un archivo
+void write_file(char *filename, char **lines) {
+    FILE *file = fopen(filename, "w+");
+    if (file == NULL) {
+        fprintf(stderr, "reverse: cannot open file '%s'\n", filename);
+        exit(1);
+    }
+    while (*lines != NULL) {
+        if (fputs(*lines, file) == EOF) {
+            fclose(file);
+            fprintf(stderr, "Error writing to file.\n");
+            exit(1);
+        }
+        lines++;
+    }
+    fclose(file);
+}
+
