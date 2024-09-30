@@ -119,3 +119,35 @@ void reverse(char **text) {
     }
 }
 
+// Programa principal
+int main(int argc, char *argv[]) {
+    char **text = NULL;
+    if (argc == 1) {
+        // ./reverse
+        text = read_shell_str();
+        reverse(text);
+        print_array(text);
+        free(text);
+        return 0;
+    } else if (argc <= 3) {
+        // ./reverse <input> <output>
+        text = read_file(argv[1]);
+        reverse(text);
+        if (argc == 3) {
+            // ./reverse <input> <output>
+            if (same_file(argv[1], argv[2]) == 1) {
+                fprintf(stderr, "reverse: input and output file must differ\n");
+                return 1;
+            }
+            write_file(argv[2], text);
+            return 0;
+        }
+        // ./reverse <input>
+        print_array(text);
+        free(text);
+        return 0;
+    } else {
+        fprintf(stderr, "usage: reverse <input> <output>\n");
+        return 1;
+    }
+}
