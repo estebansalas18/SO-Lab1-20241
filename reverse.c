@@ -33,3 +33,31 @@ void print_array(char **array)
         array++;
     }
 }
+
+// Leer un archivo y almacenar cada línea en un array de strings
+char **read_file(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        fprintf(stderr, "reverse: cannot open file '%s'\n", filename);
+        exit(1);
+    }
+    int num_lines = 0;
+    char temp[MAX_LINE_LENGTH];
+    while (fgets(temp, MAX_LINE_LENGTH, file) != NULL) {
+        num_lines++;
+    }
+    fseek(file, 0, SEEK_SET);
+    char **lines = (char **)malloc(sizeof(char *) * (num_lines + 1));
+    if (lines == NULL) {
+        fprintf(stderr, "malloc failed\n");
+        exit(1);
+    }
+    for (int i = 0; i < num_lines; i++) {
+        lines[i] = (char *)malloc(sizeof(char) * MAX_LINE_LENGTH); 
+        fgets(lines[i], MAX_LINE_LENGTH, file);
+    }
+    lines[num_lines] = NULL;
+    fclose(file);
+    return lines;
+}
+
