@@ -7,19 +7,14 @@
 #define MAX_LINE_LENGTH 1024
 
 // Verificar si dos archivos son iguales
-int same_file(const char *file1, const char *file2)
-{
+int same_file(const char *file1, const char *file2) {
     struct stat stat1, stat2;
-    if (stat(file1, &stat1) != 0 || stat(file2, &stat2) != 0)
-    {
+    if (stat(file1, &stat1) != 0 || stat(file2, &stat2) != 0) {
         return -1;
     }
-    if (stat1.st_dev == stat2.st_dev && stat1.st_ino == stat2.st_ino)
-    {
+    if (stat1.st_dev == stat2.st_dev && stat1.st_ino == stat2.st_ino) {
         return 1;
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }
@@ -106,5 +101,21 @@ void write_file(char *filename, char **lines) {
         lines++;
     }
     fclose(file);
+}
+
+// Invertir el orden de las líneas en un array de strings
+void reverse(char **text) {
+    int length = 0;
+    while (text[length] != NULL) {
+        length++;
+    }
+    int i = 0, j = length - 1;
+    while (i < j) {
+        char *temp = text[i];
+        text[i] = text[j];
+        text[j] = temp;
+        i++;
+        j--;
+    }
 }
 
